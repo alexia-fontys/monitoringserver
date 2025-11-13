@@ -20,9 +20,9 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Azure SQL Database configuration
 DB_SERVER = os.environ.get('DB_SERVER', 'sqldb-knowledgehub-01.database.windows.net')
@@ -974,7 +974,7 @@ def health():
         }), 500
 
 # ==================== MAIN ====================
-if _name_ == '_main_':
+if __name__ == '_main_':
     try:
         logger.info("="*60)
         logger.info("STARTING FLASK APPLICATION")
