@@ -49,51 +49,52 @@ HTML_TEMPLATE = '''
 <html>
 <head>
     <title>KnowledgeHub Monitoring Dashboard</title>
-    <meta http-equiv="refresh" content="5">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+            padding: 0;
+            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
             color: #1e3a5f;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(90deg, #0288d1, #81d4fa);
+            color: #fff;
         }
 
         .header h1 {
+            margin: 0;
             font-size: 42px;
             font-weight: 700;
-            color: #0c4a6e;
         }
 
         .container {
             max-width: 1400px;
-            margin: 0 auto;
+            margin: -30px auto 0 auto;
             background-color: #ffffffcc;
-            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 60, 100, 0.1);
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 60, 100, 0.1);
         }
 
         .charts {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         .chart-container {
-            background: #e3f2fd;
-            border-radius: 12px;
+            background: #e1f5fe;
+            border-radius: 15px;
             padding: 20px;
             border-left: 5px solid #0288d1;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             text-align: center;
         }
 
@@ -113,17 +114,17 @@ HTML_TEMPLATE = '''
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .stat-card {
-            flex: 1 1 220px;
-            background: #e1f5fe;
+            flex: 1 1 200px;
+            background: #e3f2fd;
             border-left: 5px solid #0288d1;
             padding: 25px;
-            border-radius: 12px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(2, 136, 209, 0.15);
+            box-shadow: 0 5px 15px rgba(2,136,209,0.1);
             transition: transform 0.25s ease;
         }
 
@@ -132,16 +133,15 @@ HTML_TEMPLATE = '''
         }
 
         .stat-card h3 {
-            margin: 0;
             font-size: 14px;
             font-weight: 500;
             color: #0277bd;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
 
         .stat-card .value {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
             color: #0c4a6e;
         }
@@ -151,12 +151,12 @@ HTML_TEMPLATE = '''
             border-collapse: collapse;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         th {
             background-color: #0288d1;
-            color: white;
+            color: #fff;
             font-weight: 600;
             text-align: left;
             padding: 14px;
@@ -189,7 +189,7 @@ HTML_TEMPLATE = '''
             font-size: 24px;
             font-weight: 600;
             color: #0277bd;
-            margin: 30px 0 20px;
+            margin: 40px 0 20px 0;
             border-bottom: 2px solid #81d4fa;
             display: inline-block;
         }
@@ -220,47 +220,24 @@ HTML_TEMPLATE = '''
         .no-data p {
             font-size: 16px;
         }
-
-        .refresh-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0288d1;
-            color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-        }
-
-        .refresh-indicator:before {
-            content: "🔄";
-            margin-right: 8px;
-            animation: spin 5s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>KnowledgeHub Monitoring Dashboard</h1>
+    </div>
+
     <div class="container">
-        <div class="header">
-            <h1>KnowledgeHub Monitoring Dashboard</h1>
-        </div>
 
         {% if metrics %}
 
-        {% if charts %}
+        {% if charts and charts.items %}
         <h2 class="section-title">Performance Charts</h2>
         <div class="charts">
             {% for chart_name, chart_data in charts.items() %}
             <div class="chart-container">
                 <h3>{{ chart_name }}</h3>
-                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}">
+                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}" />
             </div>
             {% endfor %}
         </div>
@@ -330,20 +307,17 @@ HTML_TEMPLATE = '''
             </tbody>
         </table>
 
-        <div class="info">
-            Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}
-        </div>
-
         {% else %}
         <div class="no-data">
             <h2>No Metrics Yet</h2>
             <p>Waiting for clients to send data...</p>
         </div>
         {% endif %}
-    </div>
 
-    <div class="refresh-indicator">
-        Auto-refresh enabled
+        <div class="info">
+            Dashboard for KnowledgeHub – Monitoring Overview
+        </div>
+
     </div>
 </body>
 </html>
