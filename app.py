@@ -46,195 +46,378 @@ max_entries = 100
 # HTML template with embedded table and charts
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KnowledgeHub Monitoring Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #e75d8a;
-      --primary-light: #f7c7d9;
-      --accent: #fbf0f4;
-      --text: #2e2e2e;
-      --muted: #7a7a7a;
-      --bg: #fafafa;
-      --card-bg: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 20px;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    header h1 {
-      font-size: 2.2em;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-    }
-
-    header p {
-      color: var(--muted);
-      font-size: 1em;
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(231, 93, 138, 0.08);
-      border: 1px solid var(--primary-light);
-      padding: 30px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-bottom: 35px;
-    }
-
-    .stat {
-      background: linear-gradient(180deg, #ffffff, #fff6f9);
-      border: 1px solid var(--primary-light);
-      border-radius: 12px;
-      text-align: center;
-      padding: 25px;
-      transition: box-shadow 0.3s ease;
-    }
-
-    .stat:hover {
-      box-shadow: 0 4px 16px rgba(231, 93, 138, 0.15);
-    }
-
-    .stat h3 {
-      color: var(--muted);
-      font-size: 0.9em;
-      font-weight: 500;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stat p {
-      font-size: 1.8em;
-      font-weight: 700;
-      color: var(--primary);
-      margin: 0;
-    }
-
-    section {
-      margin-top: 20px;
-    }
-
-    section h2 {
-      color: var(--primary);
-      font-size: 1.2em;
-      margin-bottom: 12px;
-      border-bottom: 2px solid var(--primary-light);
-      display: inline-block;
-      padding-bottom: 4px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 0.9em;
-    }
-
-    th, td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #f1f1f1;
-    }
-
-    th {
-      background: var(--accent);
-      color: var(--text);
-      font-weight: 600;
-      text-align: left;
-    }
-
-    tr:hover {
-      background: #fff6f9;
-    }
-
-    .no-data {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
-      background: #fff6f9;
-      border: 1px dashed var(--primary-light);
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85em;
-      margin-top: 40px;
-    }
-
-    footer span {
-      color: var(--primary);
-      font-weight: 600;
-    }
-  </style>
+    <title>☁️ KnowledgeHub Monitoring Dashboard ☁️</title>
+    <meta http-equiv="refresh" content="5">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7fafd;
+            background-image: radial-gradient(circle at 25% 25%, rgba(200,220,255,0.25), transparent 60%),
+                              radial-gradient(circle at 75% 75%, rgba(180,200,240,0.2), transparent 70%);
+            color: #1e293b;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header h1 {
+            color: #2563eb;
+            font-size: 38px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .api-info {
+            background-color: #f1f5f9;
+            border: 1px solid #d0e0f7;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .api-info h2 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 22px;
+        }
+        
+        .api-info code {
+            background-color: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            color: #0f172a;
+        }
+        
+        .api-info pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            color: #1e3a8a;
+            padding: 25px 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(37,99,235,0.1);
+            border: 1px solid #bfdbfe;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+        
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+        
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .client-section {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: #ffffff;
+            padding: 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .status-connected {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        
+        .status-disconnected {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .chart-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .chart-container h3 {
+            color: #1d4ed8;
+            margin-top: 0;
+        }
+        
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .info {
+            text-align: center;
+            color: #475569;
+            margin-top: 20px;
+            font-size: 15px;
+            padding: 12px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e1;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .no-data h2 {
+            font-size: 28px;
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+        
+        .no-data p {
+            font-size: 17px;
+            margin: 10px 0;
+        }
+        
+        .section-title {
+            color: #1d4ed8;
+            font-size: 26px;
+            margin: 30px 0 15px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #bfdbfe;
+            display: inline-block;
+        }
+        
+        .refresh-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1d4ed8;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .refresh-indicator:before {
+            content: "🔄";
+            margin-right: 8px;
+            animation: spin 5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>KnowledgeHub Monitoring Dashboard</h1>
-    <p>Empowering insights through clarity and precision</p>
-  </header>
+    <div class="container">
+        <div class="header">
+            <h1>KnowledgeHub Monitoring Dashboard</h1>
+        </div>
+        
+        <div class="api-info">
+            <h2>API Integration Guide</h2>
+            <p>Send metrics to this dashboard using the following POST request:</p>
+            <p><strong>Endpoint:</strong> <code>POST {{ base_url }}/api/metrics</code></p>
+            <p><strong>Example Python Code:</strong></p>
+            <pre>import requests
+import psutil
+from datetime import datetime
+def send_metrics():
+    metrics = {
+        'timestamp': datetime.now().isoformat(),
+        'cpu_percent': psutil.cpu_percent(interval=1),
+        'ram': {
+            'used_gb': psutil.virtual_memory().used / (1024**3),
+            'total_gb': psutil.virtual_memory().total / (1024**3),
+            'percent': psutil.virtual_memory().percent
+        },
+        'client_name': 'Server Node 1'
+    }
+    response = requests.post('{{ base_url }}/api/metrics', json=metrics)
+    print(response.json())</pre>
+        </div>
 
-  <main>
-    <div class="stats">
-      <div class="stat">
-        <h3>Active Clients</h3>
-        <p>—</p>
-      </div>
-      <div class="stat">
-        <h3>Total Metrics</h3>
-        <p>—</p>
-      </div>
-      <div class="stat">
-        <h3>Latest CPU</h3>
-        <p>—%</p>
-      </div>
-      <div class="stat">
-        <h3>Latest RAM</h3>
-        <p>—%</p>
-      </div>
+        {% if metrics %}
+        {% if latest_metrics %}
+        <h2 class="section-title">System Overview</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Active Clients</h3>
+                <p class="value">{{ total_clients }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Metrics</h3>
+                <p class="value">{{ total_metrics }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Latest CPU</h3>
+                <p class="value">{{ "%.1f"|format(latest_metrics.cpu_percent) if latest_metrics.cpu_percent else "N/A" }}%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Latest RAM</h3>
+                <p class="value">{{ "%.1f"|format(latest_metrics.ram.percent) if latest_metrics.ram else "N/A" }}%</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        <h2 class="section-title">Client Metrics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Timestamp</th>
+                    <th>CPU %</th>
+                    <th>GPU %</th>
+                    <th>RAM Used (GB)</th>
+                    <th>RAM %</th>
+                    <th>Ping (ms)</th>
+                    <th>Internet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for metric in metrics %}
+                <tr>
+                    <td><strong>{{ metric.client_name or metric.client_id }}</strong></td>
+                    <td>{{ metric.timestamp }}</td>
+                    <td>{{ "%.1f"|format(metric.cpu_percent) if metric.cpu_percent else "N/A" }}%</td>
+                    <td>{{ "%.1f"|format(metric.gpu_percent) if metric.gpu_percent else "N/A" }}</td>
+                    <td>
+                        {% if metric.ram %}
+                        {{ "%.2f"|format(metric.ram.used_gb) }} / {{ "%.2f"|format(metric.ram.total_gb) }}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ "%.1f"|format(metric.ram.percent) if metric.ram else "N/A" }}%</td>
+                    <td>{{ "%.1f"|format(metric.ping_ms) if metric.ping_ms else "N/A" }}</td>
+                    <td class="{% if metric.internet_connected %}status-connected{% else %}status-disconnected{% endif %}">
+                        {{ "Connected" if metric.internet_connected else "Disconnected" }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if charts %}
+        <h2 class="section-title">Performance Charts</h2>
+        <div class="charts">
+            {% for chart_name, chart_data in charts.items() %}
+            <div class="chart-container">
+                <h3>{{ chart_name }}</h3>
+                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="info">
+            <p>Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}</p>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <h2>No Metrics Available</h2>
+            <p>Waiting for data from connected clients...</p>
+        </div>
+        {% endif %}
     </div>
-
-    <section>
-      <h2>Recent Metrics</h2>
-      <div class="no-data">
-        <p><strong>No Metrics Yet</strong><br>Awaiting data from clients...</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© <span>KnowledgeHub</span> — Intelligent Monitoring with Heart</p>
-  </footer>
+    
+    <div class="refresh-indicator">
+        Auto-refresh enabled
+    </div>
 </body>
 </html>
 
