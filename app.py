@@ -48,213 +48,198 @@ HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html>
 <head>
-    <title>☁️ KnowledgeHub Monitoring Dashboard ☁️</title>
+    <title>KnowledgeHub Monitoring Dashboard</title>
     <meta http-equiv="refresh" content="5">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f7fafd;
-            background-image: radial-gradient(circle at 25% 25%, rgba(200,220,255,0.25), transparent 60%),
-                              radial-gradient(circle at 75% 75%, rgba(180,200,240,0.2), transparent 70%);
-            color: #1e293b;
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+            color: #1e3a5f;
         }
-        
+
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
         }
-        
+
         .header h1 {
-            color: #2563eb;
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
+            color: #0c4a6e;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
-            border: 1px solid #e2e8f0;
+            background-color: #ffffffcc;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 60, 100, 0.1);
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            color: #1e3a8a;
-            padding: 25px 15px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(37,99,235,0.1);
-            border: 1px solid #bfdbfe;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            text-transform: uppercase;
-            font-weight: 600;
-            opacity: 0.8;
-        }
-        
-        .stat-card .value {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .client-section {
-            margin-top: 30px;
-            padding: 25px;
-            background-color: #f8fafc;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-        
-        th {
-            background: linear-gradient(135deg, #3b82f6, #60a5fa);
-            color: #ffffff;
-            padding: 14px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 15px;
-        }
-        
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f9fafb;
-        }
-        
-        tr:hover {
-            background-color: #f1f5f9;
-        }
-        
-        .status-connected {
-            color: #16a34a;
-            font-weight: 600;
-        }
-        
-        .status-disconnected {
-            color: #dc2626;
-            font-weight: 600;
-        }
-        
         .charts {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
-        
+
         .chart-container {
-            text-align: center;
-            background: #ffffff;
+            background: #e3f2fd;
+            border-radius: 12px;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
+            border-left: 5px solid #0288d1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
         }
-        
+
         .chart-container h3 {
-            color: #1d4ed8;
             margin-top: 0;
+            color: #0277bd;
+            font-size: 18px;
+            margin-bottom: 15px;
         }
-        
+
         .chart-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+            width: 100%;
+            border-radius: 10px;
         }
-        
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            flex: 1 1 220px;
+            background: #e1f5fe;
+            border-left: 5px solid #0288d1;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(2, 136, 209, 0.15);
+            transition: transform 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0277bd;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: #0288d1;
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 14px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e1f5fe;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e3f2fd;
+        }
+
+        tr:hover {
+            background-color: #b3e5fc;
+        }
+
+        .status-connected {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .status-disconnected {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0277bd;
+            margin: 30px 0 20px;
+            border-bottom: 2px solid #81d4fa;
+            display: inline-block;
+        }
+
         .info {
             text-align: center;
-            color: #475569;
-            margin-top: 20px;
             font-size: 15px;
+            color: #1e3a5f;
             padding: 12px;
-            background-color: #f1f5f9;
+            margin-top: 20px;
+            background: #e1f5fe;
             border-radius: 8px;
-            border: 1px dashed #cbd5e1;
+            border: 1px solid #81d4fa;
         }
-        
+
         .no-data {
             text-align: center;
             padding: 60px 20px;
-            color: #64748b;
+            color: #0c4a6e;
         }
-        
+
         .no-data h2 {
             font-size: 28px;
-            color: #1e40af;
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
-        
+
         .no-data p {
-            font-size: 17px;
-            margin: 10px 0;
+            font-size: 16px;
         }
-        
-        .section-title {
-            color: #1d4ed8;
-            font-size: 26px;
-            margin: 30px 0 15px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid #bfdbfe;
-            display: inline-block;
-        }
-        
+
         .refresh-indicator {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #1d4ed8;
-            color: white;
+            background: #0288d1;
+            color: #ffffff;
             padding: 10px 16px;
             border-radius: 50px;
             font-size: 14px;
-            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
             display: flex;
             align-items: center;
         }
-        
+
         .refresh-indicator:before {
             content: "🔄";
             margin-right: 8px;
             animation: spin 5s linear infinite;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -268,7 +253,7 @@ HTML_TEMPLATE = '''
         </div>
 
         {% if metrics %}
-        
+
         {% if charts %}
         <h2 class="section-title">Performance Charts</h2>
         <div class="charts">
@@ -280,7 +265,7 @@ HTML_TEMPLATE = '''
             {% endfor %}
         </div>
         {% endif %}
-        
+
         {% if latest_metrics %}
         <h2 class="section-title">System Overview</h2>
         <div class="stats">
@@ -302,7 +287,7 @@ HTML_TEMPLATE = '''
             </div>
         </div>
         {% endif %}
-        
+
         <h2 class="section-title">Client Metrics</h2>
         <table>
             <thead>
@@ -334,7 +319,11 @@ HTML_TEMPLATE = '''
                     <td>{{ "%.1f"|format(metric.ram.percent) if metric.ram else "N/A" }}%</td>
                     <td>{{ "%.1f"|format(metric.ping_ms) if metric.ping_ms else "N/A" }}</td>
                     <td class="{% if metric.internet_connected %}status-connected{% else %}status-disconnected{% endif %}">
-                        {{ "Connected" if metric.internet_connected else "Disconnected" }}
+                        {% if metric.internet_connected is not none %}
+                            {{ "Connected" if metric.internet_connected else "Disconnected" }}
+                        {% else %}
+                            N/A
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -342,17 +331,17 @@ HTML_TEMPLATE = '''
         </table>
 
         <div class="info">
-            <p>Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}</p>
+            Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}
         </div>
-        
+
         {% else %}
         <div class="no-data">
-            <h2>No Metrics Available</h2>
-            <p>Waiting for data from connected clients...</p>
+            <h2>No Metrics Yet</h2>
+            <p>Waiting for clients to send data...</p>
         </div>
         {% endif %}
     </div>
-    
+
     <div class="refresh-indicator">
         Auto-refresh enabled
     </div>
