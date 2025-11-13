@@ -50,147 +50,158 @@ HTML_TEMPLATE = '''
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>💗 PinkPulse — Monitoring Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>KnowledgeHub Monitoring Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --pink: #ff6b93;
-      --light-pink: #ffd1dc;
-      --bg: #fff5f8;
+      --primary: #e75d8a;
+      --primary-light: #f7c7d9;
+      --accent: #fbf0f4;
+      --text: #2e2e2e;
+      --muted: #7a7a7a;
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--bg);
-      background-image: radial-gradient(circle at top left, rgba(255,182,193,0.2), transparent 70%), 
-                        radial-gradient(circle at bottom right, rgba(255,182,193,0.2), transparent 70%);
-      color: #4a2c3a;
+      color: var(--text);
       padding: 20px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
     }
 
     header h1 {
-      color: var(--pink);
-      font-size: 2.4em;
-      margin: 0;
-      text-shadow: 2px 2px 0 var(--light-pink);
+      font-size: 2.2em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
     }
 
     header p {
-      color: #6a4753;
+      color: var(--muted);
       font-size: 1em;
     }
 
     main {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      border: 2px solid var(--light-pink);
-      box-shadow: 0 8px 25px rgba(255, 107, 147, 0.15);
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(231, 93, 138, 0.08);
+      border: 1px solid var(--primary-light);
       padding: 30px;
-      position: relative;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 35px;
     }
 
     .stat {
-      background: linear-gradient(135deg, #ffb6c1, #ffd6e0);
-      border-radius: 15px;
-      color: white;
+      background: linear-gradient(180deg, #ffffff, #fff6f9);
+      border: 1px solid var(--primary-light);
+      border-radius: 12px;
       text-align: center;
       padding: 25px;
-      box-shadow: 0 6px 15px rgba(255,107,147,0.3);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .stat:hover {
+      box-shadow: 0 4px 16px rgba(231, 93, 138, 0.15);
     }
 
     .stat h3 {
-      font-size: 1em;
-      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.9em;
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .stat p {
-      font-size: 2em;
-      margin: 0;
+      font-size: 1.8em;
       font-weight: 700;
+      color: var(--primary);
+      margin: 0;
     }
 
     section {
-      margin-top: 30px;
+      margin-top: 20px;
+    }
+
+    section h2 {
+      color: var(--primary);
+      font-size: 1.2em;
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--primary-light);
+      display: inline-block;
+      padding-bottom: 4px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 10px;
       font-size: 0.9em;
     }
 
     th, td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #ffd1dc;
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f1f1;
     }
 
     th {
-      background: linear-gradient(90deg, #ff9ebb, #ffb6c1);
-      color: white;
+      background: var(--accent);
+      color: var(--text);
+      font-weight: 600;
       text-align: left;
-      font-weight: bold;
     }
 
-    tr:nth-child(even) { background: #fff9fb; }
-    tr:hover { background: #fff0f5; }
+    tr:hover {
+      background: #fff6f9;
+    }
 
     .no-data {
       text-align: center;
-      color: #ff9ebb;
       padding: 60px 20px;
-    }
-
-    .no-data h2 {
-      font-size: 1.8em;
-      margin: 0 0 10px;
-    }
-
-    .floating-heart {
-      position: absolute;
-      font-size: 22px;
-      opacity: 0.7;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(10deg); }
-      100% { transform: translateY(0) rotate(0deg); }
+      color: var(--muted);
+      background: #fff6f9;
+      border: 1px dashed var(--primary-light);
+      border-radius: 12px;
+      margin-top: 20px;
     }
 
     footer {
       text-align: center;
-      color: var(--pink);
-      margin-top: 25px;
-      font-size: 0.9em;
+      color: var(--muted);
+      font-size: 0.85em;
+      margin-top: 40px;
+    }
+
+    footer span {
+      color: var(--primary);
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <div class="floating-heart" style="top: 10%; left: 8%;">💖</div>
-  <div class="floating-heart" style="top: 40%; right: 10%;">💕</div>
-  <div class="floating-heart" style="bottom: 15%; left: 15%;">🌸</div>
-  <div class="floating-heart" style="bottom: 25%; right: 12%;">💗</div>
-
   <header>
-    <h1>PinkPulse Monitoring Dashboard</h1>
-    <p>Keep an eye on your systems with love and hearts 💕</p>
+    <h1>KnowledgeHub Monitoring Dashboard</h1>
+    <p>Empowering insights through clarity and precision</p>
   </header>
 
   <main>
@@ -214,19 +225,19 @@ HTML_TEMPLATE = '''
     </div>
 
     <section>
-      <h2 style="color: var(--pink); border-bottom: 2px dashed var(--light-pink); display: inline-block;">Recent Metrics 📊</h2>
+      <h2>Recent Metrics</h2>
       <div class="no-data">
-        <h2>No Metrics Yet 💫</h2>
-        <p>Waiting for clients to send data...</p>
+        <p><strong>No Metrics Yet</strong><br>Awaiting data from clients...</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>Made with 💗 — Pink and hearts forever</p>
+    <p>© <span>KnowledgeHub</span> — Intelligent Monitoring with Heart</p>
   </footer>
 </body>
 </html>
+
 '''
 
 
