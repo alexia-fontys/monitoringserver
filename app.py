@@ -46,463 +46,189 @@ max_entries = 100
 # HTML template with embedded table and charts
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>🌸 System Metrics Dashboard 🌸</title>
-    <meta http-equiv="refresh" content="5">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-        
-        body {
-            font-family: 'Nunito', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #fff5f7;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffb6c1' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        .header h1 {
-            color: #ff6b93;
-            font-size: 42px;
-            margin: 0;
-            padding: 15px 0;
-            text-shadow: 2px 2px 0px #ffd1dc;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .header h1:before, .header h1:after {
-            content: "🌸";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 28px;
-        }
-        
-        .header h1:before {
-            left: -50px;
-        }
-        
-        .header h1:after {
-            right: -50px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(255, 107, 147, 0.15);
-            border: 2px solid #ffd1dc;
-        }
-        
-        .api-info {
-            background-color: #fff0f5;
-            border: 2px dashed #ff9ebb;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .api-info:before {
-            content: "💖";
-            position: absolute;
-            top: -15px;
-            left: -15px;
-            background: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #ff9ebb;
-        }
-        
-        .api-info h2 {
-            margin-top: 0;
-            color: #ff6b93;
-            font-size: 24px;
-        }
-        
-        .api-info code {
-            background-color: #ffe4ec;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            color: #d63384;
-        }
-        
-        .api-info pre {
-            background-color: #2d3748;
-            color: #f7fafc;
-            padding: 20px;
-            border-radius: 10px;
-            overflow-x: auto;
-            border-left: 4px solid #ff6b93;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: white;
-            padding: 25px 15px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 6px 15px rgba(255, 154, 158, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #ff6b93, #ff9ebb);
-        }
-        
-        .stat-card h3 {
-            margin: 0 0 15px 0;
-            font-size: 16px;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-        
-        .stat-card .value {
-            font-size: 36px;
-            font-weight: bold;
-            margin: 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        
-        .client-section {
-            margin-top: 30px;
-            padding: 25px;
-            background-color: #fff9fb;
-            border-radius: 15px;
-            border: 2px solid #ffd1dc;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        
-        th {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ffd1dc;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #fff9fb;
-        }
-        
-        tr:hover {
-            background-color: #fff0f5;
-        }
-        
-        .status-connected {
-            color: #4ade80;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .status-connected:before {
-            content: "💚";
-            margin-right: 5px;
-        }
-        
-        .status-disconnected {
-            color: #f87171;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .status-disconnected:before {
-            content: "💔";
-            margin-right: 5px;
-        }
-        
-        .charts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .chart-container {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 2px solid #ffd1dc;
-        }
-        
-        .chart-container h3 {
-            color: #ff6b93;
-            margin-top: 0;
-        }
-        
-        .chart-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .info {
-            text-align: center;
-            color: #ff6b93;
-            margin-top: 20px;
-            font-size: 16px;
-            padding: 15px;
-            background-color: #fff9fb;
-            border-radius: 10px;
-            border: 1px dashed #ff9ebb;
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 60px 20px;
-            color: #ff9ebb;
-        }
-        
-        .no-data h2 {
-            color: #ff9ebb;
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-        
-        .no-data p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-        
-        .section-title {
-            color: #ff6b93;
-            font-size: 28px;
-            margin: 30px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px dashed #ffd1dc;
-            display: inline-block;
-        }
-        
-        .refresh-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ff6b93;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(255, 107, 147, 0.3);
-            display: flex;
-            align-items: center;
-        }
-        
-        .refresh-indicator:before {
-            content: "🔄";
-            margin-right: 8px;
-            animation: spin 5s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .floating-heart {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0.7;
-            z-index: -1;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-            100% { transform: translateY(0) rotate(0deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💗 PinkPulse — Monitoring Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #ff6b93;
+      --light-pink: #ffd1dc;
+      --bg: #fff5f8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      background-image: radial-gradient(circle at top left, rgba(255,182,193,0.2), transparent 70%), 
+                        radial-gradient(circle at bottom right, rgba(255,182,193,0.2), transparent 70%);
+      color: #4a2c3a;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      color: var(--pink);
+      font-size: 2.4em;
+      margin: 0;
+      text-shadow: 2px 2px 0 var(--light-pink);
+    }
+
+    header p {
+      color: #6a4753;
+      font-size: 1em;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      border: 2px solid var(--light-pink);
+      box-shadow: 0 8px 25px rgba(255, 107, 147, 0.15);
+      padding: 30px;
+      position: relative;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: linear-gradient(135deg, #ffb6c1, #ffd6e0);
+      border-radius: 15px;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(255,107,147,0.3);
+    }
+
+    .stat h3 {
+      font-size: 1em;
+      margin: 0 0 10px;
+    }
+
+    .stat p {
+      font-size: 2em;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    section {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ffd1dc;
+    }
+
+    th {
+      background: linear-gradient(90deg, #ff9ebb, #ffb6c1);
+      color: white;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) { background: #fff9fb; }
+    tr:hover { background: #fff0f5; }
+
+    .no-data {
+      text-align: center;
+      color: #ff9ebb;
+      padding: 60px 20px;
+    }
+
+    .no-data h2 {
+      font-size: 1.8em;
+      margin: 0 0 10px;
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.7;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(10deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    footer {
+      text-align: center;
+      color: var(--pink);
+      margin-top: 25px;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-    <div class="floating-heart" style="top: 10%; left: 5%;">💖</div>
-    <div class="floating-heart" style="top: 20%; right: 8%;">💕</div>
-    <div class="floating-heart" style="top: 60%; left: 7%;">🌸</div>
-    <div class="floating-heart" style="top: 40%; right: 5%;">💗</div>
-    
-    <div class="container">
-        <div class="header">
-            <h1>System Metrics Dashboard</h1>
-        </div>
-        
-        <div class="api-info">
-            <h2>How to Send Metrics 💌</h2>
-            <p>Send metrics to this dashboard via POST request:</p>
-            <p><strong>Endpoint:</strong> <code>POST {{ base_url }}/api/metrics</code></p>
-            <p><strong>Example Python Code:</strong></p>
-            <pre>import requests
-import psutil
-from datetime import datetime
-def send_metrics():
-    metrics = {
-        'timestamp': datetime.now().isoformat(),
-        'cpu_percent': psutil.cpu_percent(interval=1),
-        'ram': {
-            'used_gb': psutil.virtual_memory().used / (1024**3),
-            'total_gb': psutil.virtual_memory().total / (1024**3),
-            'percent': psutil.virtual_memory().percent
-        },
-        'client_name': 'My Computer'  # Optional identifier
-    }
-    
-    response = requests.post(
-        '{{ base_url }}/api/metrics',
-        json=metrics
-    )
-    print(response.json())
-# Run every 5 seconds
-import time
-while True:
-    send_metrics()
-    time.sleep(5)</pre>
-        </div>
-        
-        {% if metrics %}
-        {% if latest_metrics %}
-        <h2 class="section-title">Quick Stats ✨</h2>
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Active Clients</h3>
-                <p class="value">{{ total_clients }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Total Metrics</h3>
-                <p class="value">{{ total_metrics }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Latest CPU</h3>
-                <p class="value">{{ "%.1f"|format(latest_metrics.cpu_percent) if latest_metrics.cpu_percent else "N/A" }}%</p>
-            </div>
-            <div class="stat-card">
-                <h3>Latest RAM</h3>
-                <p class="value">{{ "%.1f"|format(latest_metrics.ram.percent) if latest_metrics.ram else "N/A" }}%</p>
-            </div>
-        </div>
-        {% endif %}
-        
-        <h2 class="section-title">Recent Metrics from All Clients 📊</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Client</th>
-                    <th>Timestamp</th>
-                    <th>CPU %</th>
-                    <th>GPU %</th>
-                    <th>RAM Used (GB)</th>
-                    <th>RAM %</th>
-                    <th>Ping (ms)</th>
-                    <th>Internet</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for metric in metrics %}
-                <tr>
-                    <td><strong>{{ metric.client_name or metric.client_id }}</strong></td>
-                    <td>{{ metric.timestamp }}</td>
-                    <td>{{ "%.1f"|format(metric.cpu_percent) if metric.cpu_percent else "N/A" }}%</td>
-                    <td>{{ "%.1f"|format(metric.gpu_percent) if metric.gpu_percent else "N/A" }}</td>
-                    <td>
-                        {% if metric.ram %}
-                        {{ "%.2f"|format(metric.ram.used_gb) }} / {{ "%.2f"|format(metric.ram.total_gb) }}
-                        {% else %}
-                        N/A
-                        {% endif %}
-                    </td>
-                    <td>{{ "%.1f"|format(metric.ram.percent) if metric.ram else "N/A" }}%</td>
-                    <td>{{ "%.1f"|format(metric.ping_ms) if metric.ping_ms else "N/A" }}</td>
-                    <td class="{% if metric.internet_connected %}status-connected{% else %}status-disconnected{% endif %}">
-                        {% if metric.internet_connected is not none %}
-                            {{ "Connected" if metric.internet_connected else "Disconnected" }}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        {% if charts %}
-        <h2 class="section-title">Performance Charts 📈</h2>
-        <div class="charts">
-            {% for chart_name, chart_data in charts.items() %}
-            <div class="chart-container">
-                <h3>{{ chart_name }}</h3>
-                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}">
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-        <div class="info">
-            <p>Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}</p>
-        </div>
-        {% else %}
-        <div class="no-data">
-            <h2>No Metrics Yet 💫</h2>
-            <p>Waiting for clients to send data...</p>
-            <p>Use the API endpoint above to start sending metrics.</p>
-        </div>
-        {% endif %}
+  <div class="floating-heart" style="top: 10%; left: 8%;">💖</div>
+  <div class="floating-heart" style="top: 40%; right: 10%;">💕</div>
+  <div class="floating-heart" style="bottom: 15%; left: 15%;">🌸</div>
+  <div class="floating-heart" style="bottom: 25%; right: 12%;">💗</div>
+
+  <header>
+    <h1>PinkPulse Monitoring Dashboard</h1>
+    <p>Keep an eye on your systems with love and hearts 💕</p>
+  </header>
+
+  <main>
+    <div class="stats">
+      <div class="stat">
+        <h3>Active Clients</h3>
+        <p>—</p>
+      </div>
+      <div class="stat">
+        <h3>Total Metrics</h3>
+        <p>—</p>
+      </div>
+      <div class="stat">
+        <h3>Latest CPU</h3>
+        <p>—%</p>
+      </div>
+      <div class="stat">
+        <h3>Latest RAM</h3>
+        <p>—%</p>
+      </div>
     </div>
-    
-    <div class="refresh-indicator">
-        Auto-refresh enabled
-    </div>
+
+    <section>
+      <h2 style="color: var(--pink); border-bottom: 2px dashed var(--light-pink); display: inline-block;">Recent Metrics 📊</h2>
+      <div class="no-data">
+        <h2>No Metrics Yet 💫</h2>
+        <p>Waiting for clients to send data...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with 💗 — Pink and hearts forever</p>
+  </footer>
 </body>
 </html>
 '''
+
 
 # ==================== DATABASE FUNCTIONS ====================
 def get_db_connection():
