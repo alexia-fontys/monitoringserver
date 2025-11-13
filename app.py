@@ -85,38 +85,7 @@ HTML_TEMPLATE = '''
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
             border: 1px solid #e2e8f0;
         }
-        
-        .api-info {
-            background-color: #f1f5f9;
-            border: 1px solid #d0e0f7;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .api-info h2 {
-            margin-top: 0;
-            color: #1e40af;
-            font-size: 22px;
-        }
-        
-        .api-info code {
-            background-color: #e2e8f0;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            color: #0f172a;
-        }
-        
-        .api-info pre {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            border-left: 4px solid #2563eb;
-        }
-        
+
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -137,16 +106,6 @@ HTML_TEMPLATE = '''
         
         .stat-card:hover {
             transform: translateY(-5px);
-        }
-        
-        .stat-card:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
         }
         
         .stat-card h3 {
@@ -216,7 +175,7 @@ HTML_TEMPLATE = '''
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 25px;
-            margin-top: 30px;
+            margin-bottom: 30px;
         }
         
         .chart-container {
@@ -307,31 +266,21 @@ HTML_TEMPLATE = '''
         <div class="header">
             <h1>KnowledgeHub Monitoring Dashboard</h1>
         </div>
-        
-        <div class="api-info">
-            <h2>API Integration Guide</h2>
-            <p>Send metrics to this dashboard using the following POST request:</p>
-            <p><strong>Endpoint:</strong> <code>POST {{ base_url }}/api/metrics</code></p>
-            <p><strong>Example Python Code:</strong></p>
-            <pre>import requests
-import psutil
-from datetime import datetime
-def send_metrics():
-    metrics = {
-        'timestamp': datetime.now().isoformat(),
-        'cpu_percent': psutil.cpu_percent(interval=1),
-        'ram': {
-            'used_gb': psutil.virtual_memory().used / (1024**3),
-            'total_gb': psutil.virtual_memory().total / (1024**3),
-            'percent': psutil.virtual_memory().percent
-        },
-        'client_name': 'Server Node 1'
-    }
-    response = requests.post('{{ base_url }}/api/metrics', json=metrics)
-    print(response.json())</pre>
-        </div>
 
         {% if metrics %}
+        
+        {% if charts %}
+        <h2 class="section-title">Performance Charts</h2>
+        <div class="charts">
+            {% for chart_name, chart_data in charts.items() %}
+            <div class="chart-container">
+                <h3>{{ chart_name }}</h3>
+                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
         {% if latest_metrics %}
         <h2 class="section-title">System Overview</h2>
         <div class="stats">
@@ -391,22 +340,11 @@ def send_metrics():
                 {% endfor %}
             </tbody>
         </table>
-        
-        {% if charts %}
-        <h2 class="section-title">Performance Charts</h2>
-        <div class="charts">
-            {% for chart_name, chart_data in charts.items() %}
-            <div class="chart-container">
-                <h3>{{ chart_name }}</h3>
-                <img src="data:image/png;base64,{{ chart_data }}" alt="{{ chart_name }}">
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
+
         <div class="info">
             <p>Dashboard auto-refreshes every 5 seconds | Total clients: {{ total_clients }}</p>
         </div>
+        
         {% else %}
         <div class="no-data">
             <h2>No Metrics Available</h2>
@@ -420,6 +358,7 @@ def send_metrics():
     </div>
 </body>
 </html>
+
 
 '''
 
